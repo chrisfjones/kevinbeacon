@@ -1,0 +1,28 @@
+{
+	"AppDescription": {
+		"en": "Hack Jukebox app"
+	},
+	"AppIcon": {
+		"36x18": ""
+	},
+	"AppName": {
+		"en": "Hack Jukebox app"
+	},
+	"BundleIdentifier": "kevinbeacon",
+	"BundleType": "Application",
+	"BundleVersion": "1.0",
+	"Dependencies": {
+        "api": "1.18.0",
+        "views": "1.10.0"
+    },
+	"RequiredInterface": 1,
+	"RequiredPermissions": [
+        "http://localhost:8080",
+        "http://ajax.googleapis.com",
+        "http://www.google-analytics.com"
+	],
+	"SupportedLanguages": [
+		"en"
+	],
+	"VendorIdentifier": "chrisfjones"
+}

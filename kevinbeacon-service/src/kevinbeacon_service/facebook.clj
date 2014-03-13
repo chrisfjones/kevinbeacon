@@ -37,7 +37,7 @@
                        "title" "Ocean Waves Crashing for Wellness And Well Being"}},
                      "id" "543216502460567"})
 
-(defn- load-listens [fbid access-token]
+(defn load-listens [fbid access-token]
   (let [fb-base-url (str "https://graph.facebook.com/" fbid)
         opts (fb-query-opts 100 access-token)
         {:keys [status headers body error] :as resp} (clj-http/get fb-base-url opts)
@@ -56,8 +56,9 @@
         last-name (when data
                     (-> data
                         (get "last_name")))]
-    (map process-raw-listen listens)
-    ))
+    (->> listens
+         (map process-raw-listen)
+         (map :music.song))))
 
 #_ (load-listens
     "100003166650173"

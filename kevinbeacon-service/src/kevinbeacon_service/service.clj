@@ -14,10 +14,11 @@
 
 (defroutes routes
   [[["/" ^:interceptors [session-interceptor]
-     ["/api/register"  ^:interceptors [bootstrap/json-body
+     ["/api" ^:interceptors [bootstrap/json-body
                                        middlewares/keyword-params
                                        (body-params/body-params)]
-      {:post handlers/handle-register}]]]])
+      ["/register" {:post handlers/handle-register}]
+      ["/next-track" {:get handlers/handle-next-track}]]]]])
 
 (def service {:env :prod
               ::bootstrap/routes routes
