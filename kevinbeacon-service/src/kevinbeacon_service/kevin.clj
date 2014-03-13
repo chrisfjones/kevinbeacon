@@ -65,13 +65,6 @@
                                   :profile (db/get-profile l1)})
         ))))
 
-{:hookup {:uri "spotify:artist:1WvvwcQx0tj6NdDhZZ2zZz"
-                             :name ""
-                             :artist "future islands"}
-                    :profile {:fbid "7812365"
-                              :first-name "Cathleen"
-                              :gender "female"}}
-
 #_ (message-track-lovers "spotify:track:2dLLR6qlu5UJ5gk0dKz0h3")
 
 (defn top-artists-for-user [fbid]
@@ -136,7 +129,7 @@
         track (track-from-uri track-uri)]
     (message-all-users {:track track})
     (future
-      (Thread/sleep 1000)
+      (Thread/sleep 2000)
       (message-track-lovers track-uri))
     track-uri))
 #_ (random-track-for-artist "spotify:artist:7tA9Eeeb68kkiG9Nrvuzmi")
