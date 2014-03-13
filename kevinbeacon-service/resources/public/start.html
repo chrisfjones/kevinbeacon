@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <script type="text/javascript" src="//use.typekit.net/gvb5taj.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <link rel="stylesheet" href="styles.css" type="text/css">
+    </head>
+    <body>
+        <div id="fb-root"></div>
+        Love music.<br>
+        Meet people.<br>
+        <a id="get-started">Get Started.</a>
+
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '616641411694309', // dev (localhost:8080 redirect)
+                    status     : true,
+                    xfbml      : false
+                });
+                $('#get-started').click(function(e){
+                    e.preventDefault();
+                    FB.login(
+                        function(response) {
+                            console.log("got auth", response);
+                            $.ajax({
+                                type: "POST",
+                                url: "/api/register",
+                                data: JSON.stringify({
+                                    "fbid" : response.authResponse.userID,
+                                    "accesstoken" : response.authResponse.accessToken
+                                }),
+                                dataType: "json",
+                                contentType : 'application/json',
+                                success: function(data, textStatus, jqXHR) {
+                                    console.log("post success", data);
+                                    window.location.href = "main.html"
+                                }
+                            });
+                        }, {scope: 'email,user_actions.music'});
+                });
+            };
+            (function(){
+                // If we've already installed the SDK, we're done
+                if (document.getElementById('facebook-jssdk')) {return;}
+
+                // Get the first script element, which we'll use to find the parent node
+                var firstScriptElement = document.getElementsByTagName('script')[0];
+
+                // Create a new script element and set its id
+                var facebookJS = document.createElement('script');
+                facebookJS.id = 'facebook-jssdk';
+
+                // Set the new script's source to the source of the Facebook JS SDK
+                facebookJS.src = '//connect.facebook.net/en_US/all.js';
+
+                // Insert the Facebook JS SDK into the DOM
+                firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);
+            }());
+        </script>
+    </body>
+</html>

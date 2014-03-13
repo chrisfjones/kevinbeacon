@@ -1,0 +1,12 @@
+body {
+    background-color: black;
+    color: whitesmoke;
+    font-size: 36px;
+    font-family: "proxima-nova", serif;
+    font-weight: 300;
+}
+
+a:visited, a {
+    color: whitesmoke;
+    text-decoration: underline;
+}
