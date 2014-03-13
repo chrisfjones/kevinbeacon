@@ -1,15 +1,34 @@
 <html>
     <head>
-        <script type='text/javascript' id='lt_ws' src='http://localhost:51697/socket.io/lighttable/ws.js'></script>
+        <script type='text/javascript' id='lt_ws' src='http://localhost:57753/socket.io/lighttable/ws.js'></script>
         <script type="text/javascript" src="//use.typekit.net/gvb5taj.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <link rel="stylesheet" href="styles.css" type="text/css">
     </head>
     <body>
+        <img id="me">
+        <div id="track-info">
+            <div style="background:#444;height:150px;width:100%;">
+                <div style="position:relative;float:left;height:96%;max-width:400px;left:1%;top:2%;">
+                    <img id="track-image" style="position:relative;height:100%;width:auto;" src=""></img>
+                </div>
+                <div style="position:relative;float:left;margin-left:30px;">
+                    <span id="track-name" style="font-size:25px;display:block;"></span>
+                    <span id="artist-name" style="font-size:25px;display:block;"></span>
+                </div>
+            </div>
+        </div>
+        <ul id="messages">
+            <!--
+            <div id="detailInfo" style="padding:10px;display:none;background:#444;min-height:100px;wdith:100%">
+                <span style="margin-left:25px;font-size:25px;display:block;"><img class="profilePic" title="Bob loves David Bowie.  He would be a good contact." style="width:50px;height:auto;" src="http://organicthemes.com/demo/profile/files/2012/12/profile_img.png"></img>  <a href="">Bob</a> loves David Bowie</span>
+                <span style="margin-left:40px;font-size:25px;display:block;"><img class="profilePic" title="Jill loves Queen, you should beging a conversation with her." style="width:50px;height:auto;" src="http://cs315227.vk.me/v315227100/6582/U-QXBdpWUdY.jpg"></img>  <a href="">Jill</a> loves Queen</span>
+            </div>
+            -->
+        </div>
         <script src="out/goog/base.js" type="text/javascript"></script>
         <script src="kevinbeacon_client.js" type="text/javascript"></script>
         <script type="text/javascript">goog.require("kevinbeacon_client.core");</script>
-        main
     </body>
 </html>

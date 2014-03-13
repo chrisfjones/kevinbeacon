@@ -18,7 +18,9 @@
                                        middlewares/keyword-params
                                        (body-params/body-params)]
       ["/register" {:post handlers/handle-register}]
-      ["/next-track" {:get handlers/handle-next-track}]]]]])
+      ["/next-track" {:get handlers/handle-next-track}]
+      ["/messages" {:get handlers/handle-get-message}]
+      ["/me" {:get handlers/handle-me}]]]]])
 
 (def service {:env :prod
               ::bootstrap/routes routes

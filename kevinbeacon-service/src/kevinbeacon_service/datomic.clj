@@ -41,6 +41,12 @@
                   :db/cardinality :db.cardinality/many
                   :db/doc "related artists"
                   :db.install/_attribute :db.part/db}
+                 {:db/id (d/tempid :db.part/db)
+                  :db/ident :spotify/track-name
+                  :db/valueType :db.type/string
+                  :db/cardinality :db.cardinality/one
+                  :db/doc "track name"
+                  :db.install/_attribute :db.part/db}
 
                  ; user
                  {:db/id (d/tempid :db.part/db)
@@ -52,6 +58,24 @@
                   :db.install/_attribute :db.part/db}
                  {:db/id (d/tempid :db.part/db)
                   :db/ident :user/accesstoken
+                  :db/valueType :db.type/string
+                  :db/cardinality :db.cardinality/one
+                  :db/doc ""
+                  :db.install/_attribute :db.part/db}
+                 {:db/id (d/tempid :db.part/db)
+                  :db/ident :user/first-name
+                  :db/valueType :db.type/string
+                  :db/cardinality :db.cardinality/one
+                  :db/doc ""
+                  :db.install/_attribute :db.part/db}
+                 {:db/id (d/tempid :db.part/db)
+                  :db/ident :user/last-name
+                  :db/valueType :db.type/string
+                  :db/cardinality :db.cardinality/one
+                  :db/doc ""
+                  :db.install/_attribute :db.part/db}
+                 {:db/id (d/tempid :db.part/db)
+                  :db/ident :user/gender
                   :db/valueType :db.type/string
                   :db/cardinality :db.cardinality/one
                   :db/doc ""
@@ -117,6 +141,15 @@
              (d/entity db)
              d/touch)))
 #_ (get-user "100003166650173")
+#_ (get-user "100004074610459")
+
+(defn get-all-user-ids []
+  (let [db (get-db)]
+    (->> (d/q '[:find ?fbid
+                :in $
+                :where [_ :user/fbid ?fbid]] db)
+         (map first))))
+#_ (get-all-user-ids)
 
 (defn add-user [fbid accesstoken]
   (d/transact (get-conn) [{:db/id (d/tempid :db.part/user)
@@ -125,7 +158,12 @@
 
 #_ (add-user "100003166650173" "CAAIw1QRMPuUBABAMdgRbZBZAuqZA3uP61fiNXQ6Wj8McbJsU3Cnsp5aY46etcDZAkoO2KDRbsZAstNZAeuxBFxrKsJXydG1UgJDAOdzEpZCCYjHBYWHUl1i86L1nEZAatdYkzPX8RSk0o26Lx0b17poixqxkaOYWQiaaOCeWrhDggjjVHMIKk5vHnh7WgK47WWdFtF03hVfVzAZDZD")
 
-
+(defn set-user-info [fbid first-name last-name gender]
+  (d/transact (get-conn) [{:db/id (d/tempid :db.part/user)
+                           :user/fbid fbid
+                           :user/first-name first-name
+                           :user/last-name last-name
+                           :user/gender gender}]))
 
 
 
@@ -151,6 +189,16 @@
          [?l :listen/user ?u]]
        (get-db) fbid))
 #_ (get-listens-for-user "100003166650173")
+#_ (get-listens-for-user "7812365")
+
+(defn all-listens []
+  (->>
+   (d/q '[:find ?l
+          :in $
+          :where [?l :listen/user]]
+        (get-db))
+   (map first)))
+#_ (count (all-listens))
 
 
 ; spotify stuff
@@ -165,6 +213,35 @@
                              :spotify/artist artist-id}])))
 #_ (set-artist-for-track "spotify:track:4Fzbjmsip37vodX8l3L5Pv" {:href "spotify:artist:32iIlSWFsOBxdq5BaVHL8g"
                                                                  :name "blah"})
+
+(defn get-profile [fbid]
+  (let [db (get-db)
+        {first-name :user/first-name
+         last-name :user/last-name
+         gender :user/gender} (some->> (d/q '[:find ?u
+                                              :in $ ?fbid
+                                              :where [?u :user/fbid ?fbid]] db fbid)
+                                       ffirst
+                                       (d/entity db)
+                                       d/touch)]
+    {:first-name first-name
+     :last-name last-name
+     :gender gender
+     :fbid fbid}))
+#_ (get-profile "100003166650173")
+
+(defn get-artist [uri]
+  (let [db (get-db)
+        {name :spotify/artist-name
+         uri :spotify/uri} (some->> (d/q '[:find ?a
+                                            :in $ ?artist-uri
+                                            :where [?a :spotify/uri ?artist-uri]] db uri)
+                                     ffirst
+                                     (d/entity db)
+                                     d/touch)]
+    {:name name
+     :uri uri}))
+#_ (get-artist "spotify:artist:4Z8W4fKeB5YxbusRsdQVPb")
 
 (defn get-artist-for-track [uri]
   (let [db (get-db)]
@@ -214,7 +291,7 @@
              (map first)
              (map (partial d/entity db))
              (map d/touch))))
-#_ (get-tracks)
+#_ (count (get-tracks))
 
 (defn get-artists []
   (let [db (get-db)]
@@ -223,7 +300,7 @@
              (map first)
              (map (partial d/entity db))
              (map d/touch))))
-#_ (get-artists)
+#_ (count (get-artists))
 
 
 

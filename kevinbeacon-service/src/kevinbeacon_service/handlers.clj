@@ -39,3 +39,17 @@
        k/random-track-for-artist
        (assoc {} :uri)
        response/response))
+
+(defn handle-get-message [{{:keys [fbid]} :session :as req}]
+  (->> (or (k/consume-message-for-user fbid) {})
+       response/response))
+
+(defn handle-me [{{:keys [fbid]} :session :as req}]
+  (->> {:fbid fbid}
+       response/response))
+
+
+
+
+
+

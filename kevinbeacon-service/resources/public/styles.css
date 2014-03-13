@@ -6,7 +6,96 @@ body {
     font-weight: 300;
 }
 
+span {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#me {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 40px;
+  width: auto;
+}
+
 a:visited, a {
     color: whitesmoke;
     text-decoration: underline;
 }
+
+@-webkit-keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+li {
+  list-style: none;
+  float: left;
+  padding-bottom: 10px;
+
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+
+  -moz-animation-name: fade-in;
+  -moz-animation-duration: 0.5s;
+  -moz-animation-fill-mode: both;
+}
+
+.profile-pic {
+  float: left;
+  margin-right: 20px;
+}
+.profile-pic.related {
+  margin-left: 20px;
+}
+
+.love-text {
+  font-size: 18px;
+  float: left;
+  margin-top: 10px;
+}
+
+.related-text {
+  font-size: 18px;
+  color: #999;
+  float: left;
+  margin-top: 10px;
+}
+
+.hookup-wrapper {
+  background-color: #3c3c3c;
+  margin-bottom: 10px;
+}
+.hookup-wrapper span {
+  padding-right: 10px;
+}
+.hookup-wrapper img {
+  height: 50px;
+  width: auto;
+  padding-top: 20px;
+  padding-right: 10px;
+}
+
+.hookup-text {
+  font-size: 18px;
+  float: left;
+  margin-left: 20px;
+}
+
+#artist-name {
+}
+

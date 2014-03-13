@@ -2,10 +2,11 @@
   (:require [clojure.string :as str]
             [clj-http.client :as clj-http]
             [clojure.data.json :as json]
-            [org.httpkit.client :as http]))
+            [org.httpkit.client :as http]
+            [kevinbeacon-service.datomic :as db]))
 
 (defn- fb-query-opts [limit token]
-  {:query-params {:fields (str "first_name,last_name,music.listens.fields(data).app_id_filter(174829003346).limit(" limit ")")
+  {:query-params {:fields (str "first_name,last_name,gender,music.listens.fields(data).app_id_filter(174829003346).limit(" limit ")")
                   :access_token token}
    :insecure? true
    :follow-redirects true
@@ -39,7 +40,7 @@
 
 (defn load-listens [fbid access-token]
   (let [fb-base-url (str "https://graph.facebook.com/" fbid)
-        opts (fb-query-opts 100 access-token)
+        opts (fb-query-opts 200 access-token)
         {:keys [status headers body error] :as resp} (clj-http/get fb-base-url opts)
         data (try
                (json/read-str body)
@@ -53,15 +54,19 @@
         first-name (when data
                      (-> data
                          (get "first_name")))
+        gender (when data
+                 (-> data
+                     (get "gender")))
         last-name (when data
                     (-> data
                         (get "last_name")))]
+    (db/set-user-info fbid first-name last-name gender)
     (->> listens
          (map process-raw-listen)
          (map :music.song))))
 
 #_ (load-listens
     "100003166650173"
-    "CAAIw1QRMPuUBABAMdgRbZBZAuqZA3uP61fiNXQ6Wj8McbJsU3Cnsp5aY46etcDZAkoO2KDRbsZAstNZAeuxBFxrKsJXydG1UgJDAOdzEpZCCYjHBYWHUl1i86L1nEZAatdYkzPX8RSk0o26Lx0b17poixqxkaOYWQiaaOCeWrhDggjjVHMIKk5vHnh7WgK47WWdFtF03hVfVzAZDZD"
+    "CAAIw1QRMPuUBANt61NiD3GZCXlb4CCaKb0lQrGh7A3w8G8lK7efJAeZBK8kva20n48CoL6k5QZA8oOVOPpM9W99h8C2v5vraVJceUEHpb9ZBx4kuvtokp2fDDlS96nLfuVUtD52EUuP1rZCQbbjaJZBQdJ0525pONX1HE1sqb3SDTkgI49Mk5fXen0ZA6tWPcsZD"
     )
 
