@@ -33,7 +33,7 @@
 
 (defn handle-next-track [req]
   (->> (k/top-artists-for-all)
-       (take 20)
+       (take 15)
        shuffle
        first
        k/random-track-for-artist

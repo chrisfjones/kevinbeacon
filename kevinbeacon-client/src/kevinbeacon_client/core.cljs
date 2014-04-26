@@ -83,5 +83,5 @@
               :keywords? true
               :handler handle-message
               :error-handler #(println "error!" %)})
-         (<! (timeout 1000))
+         (<! (timeout 500))
          (recur))

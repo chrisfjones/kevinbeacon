@@ -129,7 +129,7 @@
         track (track-from-uri track-uri)]
     (message-all-users {:track track})
     (future
-      (Thread/sleep 2000)
+      (Thread/sleep 1000)
       (message-track-lovers track-uri))
     track-uri))
 #_ (random-track-for-artist "spotify:artist:7tA9Eeeb68kkiG9Nrvuzmi")
